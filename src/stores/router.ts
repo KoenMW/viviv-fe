@@ -14,7 +14,7 @@ export const route = writable<string>("");
 export const params = writable<URLSearchParams | null>(null);
 
 const setRouteAndParams = () => {
-  const searchParams = new URLSearchParams(location.href);
+  const searchParams = new URLSearchParams(location.search);
   params.set(searchParams);
   route.set(searchParams.get(routeParam) ?? "");
 };

@@ -9,5 +9,6 @@
 </script>
 
 <main>
+  route: {$route}
   <page.component />
 </main>
