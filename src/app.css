@@ -1,5 +1,6 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-stack: Barlow, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: var(--font-stack);
   line-height: 1.5;
   font-weight: 400;
 
@@ -11,6 +12,14 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --c-red: #E4022E;
+  --c-blue: #00A3DF;
+  --c-purple: #832C87;
+  --c-yellow: #F49C00;
+  --c-orange: #EE7006;
+  --c-green: #95C21F;
+
 }
 
 a {
