@@ -9,6 +9,15 @@
 </script>
 
 <main>
-  route: {$route}
   <page.component />
 </main>
+
+<style>
+  main {
+    display: flex;
+    flex-direction: column;
+    width: 100dvw;
+    align-items: center;
+    justify-content: center;
+  }
+</style>

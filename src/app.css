@@ -5,8 +5,6 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,10 +14,23 @@
   --c-red: #E4022E;
   --c-blue: #00A3DF;
   --c-purple: #832C87;
-  --c-yellow: #F49C00;
+  --c-yellow: #F59C00;
   --c-orange: #EE7006;
   --c-green: #95C21F;
+  --c-white: #ffffff;
 
+  --c-background: #242424;
+  --c-foreground: var(--c-white);
+
+  
+  background-color: var(--c-background);
+  color: var(--c-foreground);
+
+}
+
+.light {
+  --c-background: var(--c-white);
+  --c-foreground: #000000;
 }
 
 a {
@@ -37,6 +48,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--c-background);
+  color: var(--c-foreground);
 }
 
 h1 {
@@ -48,12 +61,6 @@ h1 {
   padding: 2em;
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
 
 button {
   border-radius: 8px;
