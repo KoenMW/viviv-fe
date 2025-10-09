@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { questionnaireParam } from "../consts";
   import type { MPHColours } from "../types";
 
   type Porps = {
@@ -12,7 +13,7 @@
 <div class="container" style="--colour: var(--c-{colour})">
   <h3>{group}</h3>
   <div class="content">{content}</div>
-  <a href="?route=questionnairee&questionnairee={group}">Kies</a>
+  <a href="?route=questionnaire&{questionnaireParam}={group}">Kies</a>
 </div>
 
 <style>

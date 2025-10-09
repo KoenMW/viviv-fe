@@ -1,6 +1,7 @@
 import type { MPHColours, Questionnairetype } from "./types";
 
 export const routeParam = "route";
+export const questionnaireParam = "questionnaire";
 export const localResultsKey = "results";
 
 export const MPHQuestions_Adult: Questionnairetype = {
