@@ -25,7 +25,7 @@
 </script>
 
 <span class="highlight">{currentTopic}</span>
-<h2>Vul in hoeveel jij het met de volgende stellingen eens bent:</h2>
+<h2>{questions[currentTopic][currentQuestion]}</h2>
 <button
   class="next"
   onclick={() => {
@@ -34,7 +34,9 @@
   }}>&gt;</button
 >
 <div class="question-container">
-  <div class="question">{questions[currentTopic][currentQuestion]}</div>
+  <div class="question"
+    >Vul in hoeveel jij het met de volgende stellingen eens bent:</div
+  >
   <input
     class="slider"
     type="range"
@@ -51,13 +53,50 @@
     width: 100%;
     text-align: center;
   }
-  .slider {
-    width: 70%;
-  }
 
   .next {
     background-color: var(--colour);
     width: fit-content;
     align-self: flex-end;
+  }
+
+  .slider {
+    width: 80%;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0.2rem;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .slider::-webkit-slider-runnable-track {
+    height: 0.4rem;
+    background: var(--colour);
+    border-radius: 0.2rem;
+  }
+
+  .slider::-moz-range-track {
+    height: 0.4rem;
+    background: var(--colour);
+    border-radius: 0.2rem;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.2rem;
+    height: 1.2rem;
+    background: var(--colour);
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -0.4rem;
+  }
+
+  .slider::-moz-range-thumb {
+    width: 1.2rem;
+    height: 1.2rem;
+    background: var(--colour);
+    border-radius: 50%;
+    cursor: pointer;
   }
 </style>

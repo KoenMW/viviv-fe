@@ -121,5 +121,9 @@
   section {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 50rem;
+    align-items: center;
+    text-align: center;
   }
 </style>
