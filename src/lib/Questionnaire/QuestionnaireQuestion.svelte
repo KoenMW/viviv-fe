@@ -4,32 +4,45 @@
   type Props = {
     currentTopic: MPHtypes;
     nextQuestion: () => void;
+    oninput: (
+      e: Event & {
+        currentTarget: EventTarget & HTMLInputElement;
+      }
+    ) => void;
     questions: Questionnairetype;
     currentQuestion: number;
-    currentValue: number;
   };
 
   let {
     currentTopic,
     nextQuestion,
+    oninput,
     questions,
     currentQuestion,
-    currentValue,
   }: Props = $props();
+
+  let value: number = $state(5);
 </script>
 
 <span class="highlight">{currentTopic}</span>
 <h2>Vul in hoeveel jij het met de volgende stellingen eens bent:</h2>
-<button class="next" onclick={nextQuestion}>&gt;</button>
+<button
+  class="next"
+  onclick={() => {
+    nextQuestion();
+    value = 5;
+  }}>&gt;</button
+>
 <div class="question-container">
   <div class="question">{questions[currentTopic][currentQuestion]}</div>
   <input
     class="slider"
     type="range"
     name="slider"
-    bind:value={currentValue}
+    {oninput}
     min="0"
     max="10"
+    bind:value
   />
 </div>
 

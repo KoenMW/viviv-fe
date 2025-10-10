@@ -55,7 +55,6 @@
   const nextQuestion = () => {
     if (!questions) return;
     saveAnswere();
-    currentValue = 5;
     currentQuestion++;
     if (currentQuestion >= questions[currentTopic].length) {
       const currentIndex = questionKeys.findIndex((v) => v === currentTopic);
@@ -69,9 +68,17 @@
     }
   };
 
-  const onclick = () => {
+  const reset = () => {
     currentState = "questioning";
     setEmptyResults();
+  };
+
+  const sliderChange = (
+    e: Event & {
+      currentTarget: EventTarget & HTMLInputElement;
+    }
+  ) => {
+    currentValue = Number(e.currentTarget.value);
   };
 
   onMount(() => {
@@ -96,7 +103,7 @@
   {#if error}
     <QuestionnaireError {error} />
   {:else if currentState === "reset"}
-    <QuestionnaireReset {onclick} />
+    <QuestionnaireReset onclick={reset} />
   {:else if currentState === "finished"}
     <QuestionnaireFinished />
   {:else if questions && currentState === "questioning"}
@@ -105,7 +112,7 @@
       {nextQuestion}
       {questions}
       {currentQuestion}
-      {currentValue}
+      oninput={sliderChange}
     />
   {/if}
 </section>
