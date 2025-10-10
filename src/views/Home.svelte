@@ -1,6 +1,6 @@
 <script lang="ts">
   import { questionnaires } from "../consts";
-  import QuestionnaireButton from "../lib/QuestionnaireButton.svelte";
+  import QuestionnaireButton from "../lib/QuestionnaireCard.svelte";
 </script>
 
 <h1>vragenlijsten:</h1>

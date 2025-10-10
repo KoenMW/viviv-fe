@@ -1,4 +1,4 @@
-import type { MPHColours, Questionnairetype } from "./types";
+import type { MPHColours, MPHtypes, Questionnairetype } from "./types";
 
 export const routeParam = "route";
 export const questionnaireParam = "questionnaire";
@@ -77,3 +77,12 @@ export const questionnaires: Record<
     questionnaire: MPHQuestions_Adult,
   },
 } as const;
+
+export const MPHtypesColours: Record<MPHtypes, MPHColours> = {
+  lichaamsfuncties: "red",
+  "mentaal welbevinden": "blue",
+  zingeving: "purple",
+  "kwaliteit van leven": "yellow",
+  meedoen: "orange",
+  "dagelijks functioneren": "green",
+};

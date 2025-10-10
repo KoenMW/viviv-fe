@@ -6,7 +6,13 @@ export type MPHtypes =
   | "meedoen"
   | "dagelijks functioneren";
 
-export type MPHColours = "red" | "blue" | "yellow" | "orange" | "green";
+export type MPHColours =
+  | "red"
+  | "blue"
+  | "yellow"
+  | "orange"
+  | "green"
+  | "purple";
 
 export type MPHScores = Record<MPHtypes, Record<string, number>>;
 

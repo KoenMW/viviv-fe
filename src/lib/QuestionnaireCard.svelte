@@ -41,13 +41,4 @@
   .content {
     text-align: center;
   }
-
-  a {
-    width: 100%;
-    background-color: var(--colour);
-    color: var(--c-white);
-    text-transform: uppercase;
-    text-align: center;
-    border-radius: 0.5rem;
-  }
 </style>
