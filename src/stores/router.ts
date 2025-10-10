@@ -6,6 +6,8 @@ import Questionaire from "../views/Questionnaire.svelte";
 
 export type Routes = Record<string, Component>;
 
+export type Paths = "" | "questionnaire" | "results";
+
 export const routes: Routes = {
   "": Home,
   questionnaire: Questionaire,
@@ -24,9 +26,5 @@ export const goTo = (route: string) => {
 
   history.pushState({}, "", url);
 };
-
-window.addEventListener("popstate", () => {
-  console.log("popstate");
-});
 
 setRouteAndParams();

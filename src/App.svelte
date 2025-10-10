@@ -14,10 +14,12 @@
 
 <style>
   main {
+    --margin: 2rem;
     display: flex;
     flex-direction: column;
-    width: 100dvw;
+    width: calc(100dvw - var(--margin) * 2);
     align-items: center;
     justify-content: center;
+    margin: var(--margin);
   }
 </style>

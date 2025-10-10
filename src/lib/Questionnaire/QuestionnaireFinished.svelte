@@ -1,7 +1,11 @@
+<script>
+  import Link from "../Link.svelte";
+</script>
+
 <h2> De vragenlijst is klaar! </h2>
 <div class="container">
-  <a href="?route=">Home</a>
-  <a href="?route=results">check je resultaten en recommandations</a>
+  <Link path="">Home</Link>
+  <Link path="results">check je resultaten en recommandations</Link>
 </div>
 
 <style>

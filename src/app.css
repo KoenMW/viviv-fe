@@ -34,7 +34,6 @@
 }
 
 a {
-  width: 100%;
   background-color: var(--colour);
   color: var(--c-white);
   text-transform: uppercase;
@@ -104,4 +103,8 @@ button:focus-visible {
 
 .highlight {
   color: var(--colour);
+}
+
+* {
+  box-sizing: border-box;
 }

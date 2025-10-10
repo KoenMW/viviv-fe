@@ -4,7 +4,7 @@ export const routeParam = "route";
 export const questionnaireParam = "questionnaire";
 export const localResultsKey = "results";
 
-export const MPHQuestions_Adult: Questionnairetype = {
+const MPHQuestions_Adult: Questionnairetype = {
   lichaamsfuncties: [
     "Ik voel mij gezond",
     "Ik voel mij fit",
@@ -63,6 +63,10 @@ export const MPHQuestions_Adult: Questionnairetype = {
   ],
 } as const;
 
+// const MPHQuestions_Young_Adult: Questionnairetype = {
+
+// }
+
 export const questionnaires: Record<
   string,
   {
@@ -75,6 +79,11 @@ export const questionnaires: Record<
     colour: "red",
     content: "De complete versie voor volwassenen",
     questionnaire: MPHQuestions_Adult,
+  },
+  "jongeren 16-25 jaar": {
+    colour: "orange",
+    content: "Vragenlijst voor jongeren",
+    questionnaire: MPHQuestions_Adult, // should add the young adult questionnaire
   },
 } as const;
 

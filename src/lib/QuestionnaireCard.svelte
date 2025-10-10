@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { questionnaireParam } from "../consts";
   import type { MPHColours } from "../types";
+  import Link from "./Link.svelte";
 
   type Porps = {
     group: string;
@@ -13,7 +13,13 @@
 <div class="container" style="--colour: var(--c-{colour})">
   <h3>{group}</h3>
   <div class="content">{content}</div>
-  <a href="?route=questionnaire&{questionnaireParam}={group}">Kies</a>
+  <Link
+    path="questionnaire"
+    params={{
+      questionnaire: group,
+    }}
+    width="100%">Kies</Link
+  >
 </div>
 
 <style>
@@ -23,9 +29,10 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    box-shadow: 0 0 0.5rem var(--c-foreground);
+    box-shadow: 0 0 0.5rem var(--colour);
     padding: 1rem;
     border-radius: 1rem;
+    justify-content: space-between;
   }
 
   h3 {
@@ -34,6 +41,7 @@
     border-radius: 0.5rem;
     width: 90%;
     margin: 0;
+    padding: 0.5rem;
     text-transform: uppercase;
     color: var(--c-white);
   }

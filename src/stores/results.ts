@@ -4,6 +4,17 @@ import { localResultsKey } from "../consts";
 
 export const results = writable<MPHScores | null>(null);
 
+export const setEmptyResults = () => {
+  results.set({
+    lichaamsfuncties: {},
+    "dagelijks functioneren": {},
+    "kwaliteit van leven": {},
+    "mentaal welbevinden": {},
+    meedoen: {},
+    zingeving: {},
+  });
+};
+
 export const loadLocal = () => {
   const scoresJSON = localStorage.getItem(localResultsKey);
 
