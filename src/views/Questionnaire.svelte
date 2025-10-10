@@ -70,5 +70,7 @@
   section {
     display: flex;
     flex-direction: column;
+
+    margin: 2rem;
   }
 </style>
