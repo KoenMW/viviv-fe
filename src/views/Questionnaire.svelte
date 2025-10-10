@@ -6,21 +6,17 @@
     questionnaireParam,
     questionnaires,
   } from "../consts";
+  import QuestionnaireFinished from "../lib/Questionnaire/QuestionnaireFinished.svelte";
+  import QuestionnaireQuestion from "../lib/Questionnaire/QuestionnaireQuestion.svelte";
+  import QuestionnaireError from "../lib/Questionnaire/QuestionnaireError.svelte";
 
   let questions: null | Questionnairetype = $state(null);
-
   let questionKeys: MPHtypes[] = $state([]);
-
   let colour: MPHColours = $state("blue");
-
   let error: string = $state("");
-
   let currentTopic: MPHtypes = $state("lichaamsfuncties");
-
   let currentQuestion: number = $state(0);
-
   let currentValue: number = $state(5);
-
   let finished: boolean = $state(false);
 
   const nextQuestion = () => {
@@ -55,30 +51,18 @@
 </script>
 
 <section style="--colour: var(--c-{colour})">
-  {#if finished}
-    <h2> De vragenlijst is klaar! </h2>
-    <div>
-      <a href="?route=">Home</a>
-      <a href="?route=results">check je resultaten en recommandations</a>
-    </div>
+  {#if error}
+    <QuestionnaireError {error} />
+  {:else if finished}
+    <QuestionnaireFinished />
   {:else if questions}
-    <span class="highlight">{currentTopic}</span>
-    <h2>Vul in hoeveel jij het met de volgende stellingen eens bent:</h2>
-    <button class="next" onclick={nextQuestion}>&gt;</button>
-    <div class="question-container">
-      <div class="question">{questions[currentTopic][currentQuestion]}</div>
-      <input
-        class="slider"
-        type="range"
-        name="slider"
-        bind:value={currentValue}
-        min="0"
-        max="10"
-      />
-    </div>
-  {:else if error}
-    <h2>We kwamen een error tegen terwijl we de vragenlijst zochten</h2>
-    <div>{error}</div>
+    <QuestionnaireQuestion
+      {currentTopic}
+      {nextQuestion}
+      {questions}
+      {currentQuestion}
+      {currentValue}
+    />
   {/if}
 </section>
 
@@ -86,18 +70,5 @@
   section {
     display: flex;
     flex-direction: column;
-  }
-  .question-container {
-    width: 100%;
-    text-align: center;
-  }
-  .slider {
-    width: 70%;
-  }
-
-  .next {
-    background-color: var(--colour);
-    width: fit-content;
-    align-self: flex-end;
   }
 </style>
