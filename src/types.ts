@@ -17,3 +17,7 @@ export type MPHColours =
 export type MPHScores = Record<MPHtypes, Record<string, number>>;
 
 export type Questionnairetype = Record<MPHtypes, string[]>;
+
+export type InputEventType = Event & {
+  currentTarget: EventTarget & HTMLInputElement;
+};

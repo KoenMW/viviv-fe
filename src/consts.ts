@@ -8,12 +8,12 @@ const MPHQuestions_Adult: Questionnairetype = {
   lichaamsfuncties: [
     "Ik voel mij gezond",
     "Ik voel mij fit",
-    "ik heb geen klachten of pijn",
+    "Ik heb geen klachten of pijn",
     "Ik slaap goed",
     "Ik eet goed",
-    "Ik ben teveden ove mijn sekualiteit",
+    "Ik ben tevreden over mijn seksualiteit",
     "Ik herstel snel na inspanning. Bijvoorbeeld na het sporten",
-    "Ik kan makkelijk bewegen, Bijvoorbeel traplopen, wandelen of fietsen",
+    "Ik kan makkelijk bewegen. Bijvoorbeeld traplopen, wandelen of fietsen",
   ],
   "mentaal welbevinden": [
     "Ik kan dingen goed onthouden",
@@ -50,7 +50,7 @@ const MPHQuestions_Adult: Questionnairetype = {
     "Ik heb mensen die mij steunen als dat nodig is",
     "Ik heb het gevoel dat ik erbij hoor in mijn omgeving",
     "Ik heb werk of andere bezigheden die ik zinvol vind",
-    "Ik ben geïnteresseerd in wat er in de maatschappij gebeur",
+    "Ik ben geïnteresseerd in wat er in de maatschappij gebeurt",
   ],
   "dagelijks functioneren": [
     "Ik kan goed voor mijzelf zorgen. Bijvoorbeeld wassen, aankleden, boodschappen doen, koken",
