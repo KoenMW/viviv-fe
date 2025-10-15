@@ -22,29 +22,43 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  # Build job
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "node"
+
       - name: Install dependencies
         run: npm install
+
       - name: Build the project
         run: npm run build
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: "./dist"
+
+  # Deploy job
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Download artifact
+        uses: actions/download-pages-artifact@v3
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
