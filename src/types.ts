@@ -1,11 +1,3 @@
-// export type MPHtypes =
-//   | "lichaamsfuncties"
-//   | "mentaal welbevinden"
-//   | "zingeving"
-//   | "kwaliteit van leven"
-//   | "meedoen"
-//   | "dagelijks functioneren";
-
 export enum MPHTopics {
   "lichaamsfuncties",
   "mentaal welbevinden",

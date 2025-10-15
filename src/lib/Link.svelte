@@ -26,7 +26,6 @@
     if (!p) return "";
     let s = "";
     for (const i in p) {
-      console.log(i);
       s += `&${i}=${p[i]}`;
     }
     return s;
