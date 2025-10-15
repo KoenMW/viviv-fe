@@ -1,11 +1,11 @@
-import type { MPHColours, MPHtypes, Questionnairetype } from "./types";
+import type { MPHColours, MPHTopics, Questionnairetype } from "./types";
 
 export const routeParam = "route";
 export const questionnaireParam = "questionnaire";
 export const localResultsKey = "results";
 
 const MPHQuestions_Adult: Questionnairetype = {
-  lichaamsfuncties: [
+  0: [
     "Ik voel mij gezond",
     "Ik voel mij fit",
     "Ik heb geen klachten of pijn",
@@ -15,7 +15,7 @@ const MPHQuestions_Adult: Questionnairetype = {
     "Ik herstel snel na inspanning. Bijvoorbeeld na het sporten",
     "Ik kan makkelijk bewegen. Bijvoorbeeld traplopen, wandelen of fietsen",
   ],
-  "mentaal welbevinden": [
+  1: [
     "Ik kan dingen goed onthouden",
     "Ik kan mij goed concentreren",
     "Ik kan zien, horen, praten, lezen",
@@ -24,7 +24,7 @@ const MPHQuestions_Adult: Questionnairetype = {
     "Ik zoek naar oplossingen om moeilijke situaties te veranderen",
     "Ik heb controle over mijn leven",
   ],
-  zingeving: [
+  2: [
     "Ik heb een zinvol leven",
     "Ik heb 's morgen zin in de dag",
     "Ik heb idealen die ik graag wil bereiken",
@@ -33,7 +33,7 @@ const MPHQuestions_Adult: Questionnairetype = {
     "Ik ben dankbaar voor wat het leven mij biedt",
     "Ik wil mijn hele leven blijven leren",
   ],
-  "kwaliteit van leven": [
+  3: [
     "Ik geniet van mijn leven",
     "Ik ben gelukkig",
     "Ik zit lekker in mijn vel",
@@ -43,7 +43,7 @@ const MPHQuestions_Adult: Questionnairetype = {
     "Ik ben tevreden over waar ik woon en met wie",
     "Ik heb genoeg geld om mijn rekeningen te betalen",
   ],
-  meedoen: [
+  4: [
     "Ik heb goed contact met andere mensen",
     "Andere mensen nemen mij serieus",
     "Ik heb mensen met wie ik leuke dingen kan doen",
@@ -52,7 +52,7 @@ const MPHQuestions_Adult: Questionnairetype = {
     "Ik heb werk of andere bezigheden die ik zinvol vind",
     "Ik ben geïnteresseerd in wat er in de maatschappij gebeurt",
   ],
-  "dagelijks functioneren": [
+  5: [
     "Ik kan goed voor mijzelf zorgen. Bijvoorbeeld wassen, aankleden, boodschappen doen, koken",
     "Ik weet wat ik wel kan en wat ik niet kan",
     "Ik weet hoe ik mijn gezondheid kan verzorgen",
@@ -87,11 +87,11 @@ export const questionnaires: Record<
   },
 } as const;
 
-export const MPHtypesColours: Record<MPHtypes, MPHColours> = {
-  lichaamsfuncties: "red",
-  "mentaal welbevinden": "blue",
-  zingeving: "purple",
-  "kwaliteit van leven": "yellow",
-  meedoen: "orange",
-  "dagelijks functioneren": "green",
+export const MPHTopicColours: Record<MPHTopics, MPHColours> = {
+  0: "red",
+  1: "blue",
+  2: "purple",
+  3: "yellow",
+  4: "orange",
+  5: "green",
 };

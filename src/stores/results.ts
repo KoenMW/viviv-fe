@@ -6,12 +6,12 @@ export const results = writable<MPHScores | null>(null);
 
 export const setEmptyResults = () => {
   results.set({
-    lichaamsfuncties: {},
-    "dagelijks functioneren": {},
-    "kwaliteit van leven": {},
-    "mentaal welbevinden": {},
-    meedoen: {},
-    zingeving: {},
+    0: {},
+    1: {},
+    2: {},
+    3: {},
+    4: {},
+    5: {},
   });
 };
 

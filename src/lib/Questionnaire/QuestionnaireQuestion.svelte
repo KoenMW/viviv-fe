@@ -1,13 +1,14 @@
 <script lang="ts">
-  import type {
-    InputEventType,
-    MPHtypes,
-    Questionnairetype,
+  import { MPHTopicColours } from "../../consts";
+  import {
+    MPHTopics,
+    type InputEventType,
+    type Questionnairetype,
   } from "../../types";
-  import { calcProgress } from "../../utils";
 
   type Props = {
-    currentTopic: MPHtypes;
+    topics: MPHTopics[];
+    currentTopic: MPHTopics;
     nextQuestion: () => void;
     oninput: (e: InputEventType) => void;
     questions: Questionnairetype;
@@ -15,6 +16,7 @@
   };
 
   let {
+    topics,
     currentTopic,
     nextQuestion,
     oninput,
@@ -25,11 +27,11 @@
   let value: number = $state(5);
 
   let percentageDone: number = $derived(
-    calcProgress(questions, currentTopic, currentQuestion) * 100
+    (currentQuestion / questions[currentTopic].length) * 100
   );
 </script>
 
-<span class="highlight">{currentTopic}</span>
+<span class="highlight">{MPHTopics[currentTopic]}</span>
 <h2>{questions[currentTopic][currentQuestion]}</h2>
 <button
   class="next"
@@ -49,7 +51,20 @@
     max="10"
     bind:value
   />
-  <div class="progress-bar" style="--percentage: {percentageDone}%"></div>
+  <div class="bars">
+    {#each topics as topic}
+      <div
+        class="progress-bar"
+        style="--colour: var(--c-{MPHTopicColours[
+          topic
+        ]});--percentage: {topic === currentTopic
+          ? percentageDone
+          : topic > currentTopic
+            ? 0
+            : 100}%"
+      ></div>
+    {/each}
+  </div>
 </div>
 
 <style>
@@ -104,11 +119,17 @@
     cursor: pointer;
   }
 
+  .bars {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+  }
+
   .progress-bar {
+    flex-grow: 1;
     position: relative;
     justify-self: center;
     margin: 2rem 0;
-    width: 100%;
     height: 0.5rem;
     border-radius: 2rem;
   }

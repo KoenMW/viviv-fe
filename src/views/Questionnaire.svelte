@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import type { MPHColours, MPHtypes, Questionnairetype } from "../types";
+  import type { MPHColours, MPHTopics, Questionnairetype } from "../types";
   import {
-    MPHtypesColours,
+    MPHTopicColours,
     questionnaireParam,
     questionnaires,
   } from "../consts";
@@ -13,10 +13,12 @@
   import QuestionnaireReset from "../lib/Questionnaire/QuestionnaireReset.svelte";
 
   let questions: null | Questionnairetype = $state(null);
-  let questionKeys: MPHtypes[] = $state([]);
+  let topics: MPHTopics[] = $derived(
+    questions ? Object.keys(questions).map((v) => Number(v)) : []
+  );
   let error: string = $state("");
-  let currentTopic: MPHtypes = $state("lichaamsfuncties");
-  let colour: MPHColours = $derived(MPHtypesColours[currentTopic]);
+  let currentTopic: MPHTopics = $state(0);
+  let colour: MPHColours = $derived(MPHTopicColours[currentTopic]);
   let currentQuestion: number = $state(0);
   let currentValue: number = $state(5);
   let currentState: "questioning" | "finished" | "reset" =
@@ -57,14 +59,14 @@
     saveAnswere();
     currentQuestion++;
     if (currentQuestion >= questions[currentTopic].length) {
-      const currentIndex = questionKeys.findIndex((v) => v === currentTopic);
-      if (currentIndex >= questionKeys.length - 1) {
+      const currentIndex = topics.findIndex((v) => v === currentTopic);
+      if (currentIndex >= topics.length - 1) {
         setFinished();
         return;
       }
       currentQuestion = 0;
-      currentTopic = questionKeys[currentIndex + 1] as MPHtypes;
-      colour = MPHtypesColours[currentTopic];
+      currentTopic = topics[currentIndex + 1];
+      colour = MPHTopicColours[currentTopic];
     }
   };
 
@@ -89,8 +91,7 @@
       return;
     }
     questions = questionnaires[paramResult].questionnaire;
-    questionKeys = Object.keys(questions) as MPHtypes[];
-    currentTopic = questionKeys[0];
+    currentTopic = topics[0];
 
     if ($results) currentState = "reset";
     else setEmptyResults();
@@ -108,6 +109,7 @@
     <QuestionnaireFinished />
   {:else if questions && currentState === "questioning"}
     <QuestionnaireQuestion
+      {topics}
       {currentTopic}
       {nextQuestion}
       {questions}

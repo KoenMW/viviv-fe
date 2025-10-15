@@ -1,10 +1,19 @@
-export type MPHtypes =
-  | "lichaamsfuncties"
-  | "mentaal welbevinden"
-  | "zingeving"
-  | "kwaliteit van leven"
-  | "meedoen"
-  | "dagelijks functioneren";
+// export type MPHtypes =
+//   | "lichaamsfuncties"
+//   | "mentaal welbevinden"
+//   | "zingeving"
+//   | "kwaliteit van leven"
+//   | "meedoen"
+//   | "dagelijks functioneren";
+
+export enum MPHTopics {
+  "lichaamsfuncties",
+  "mentaal welbevinden",
+  "zingeving",
+  "kwaliteit van leven",
+  "meeddoen",
+  "dagelijks functioneren",
+}
 
 export type MPHColours =
   | "red"
@@ -14,9 +23,9 @@ export type MPHColours =
   | "green"
   | "purple";
 
-export type MPHScores = Record<MPHtypes, Record<string, number>>;
+export type MPHScores = Record<MPHTopics, Record<string, number>>;
 
-export type Questionnairetype = Record<MPHtypes, string[]>;
+export type Questionnairetype = Record<MPHTopics, string[]>;
 
 export type InputEventType = Event & {
   currentTarget: EventTarget & HTMLInputElement;
