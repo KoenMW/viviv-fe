@@ -4,6 +4,7 @@
     MPHtypes,
     Questionnairetype,
   } from "../../types";
+  import { calcProgress } from "../../utils";
 
   type Props = {
     currentTopic: MPHtypes;
@@ -22,6 +23,10 @@
   }: Props = $props();
 
   let value: number = $state(5);
+
+  let percentageDone: number = $derived(
+    calcProgress(questions, currentTopic, currentQuestion) * 100
+  );
 </script>
 
 <span class="highlight">{currentTopic}</span>
@@ -44,6 +49,7 @@
     max="10"
     bind:value
   />
+  <div class="progress-bar" style="--percentage: {percentageDone}%"></div>
 </div>
 
 <style>
@@ -96,5 +102,34 @@
     background: var(--colour);
     border-radius: 50%;
     cursor: pointer;
+  }
+
+  .progress-bar {
+    position: relative;
+    justify-self: center;
+    margin: 2rem 0;
+    width: 100%;
+    height: 0.5rem;
+    border-radius: 2rem;
+  }
+
+  .progress-bar::before,
+  .progress-bar::after {
+    content: "";
+    left: 0;
+    top: 0;
+    position: absolute;
+    height: 100%;
+    background-color: var(--colour);
+    border-radius: inherit;
+  }
+
+  .progress-bar::before {
+    width: 100%;
+    opacity: 30%;
+  }
+
+  .progress-bar::after {
+    width: var(--percentage);
   }
 </style>

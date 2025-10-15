@@ -83,7 +83,7 @@ export const questionnaires: Record<
   "jongeren 16-25 jaar": {
     colour: "orange",
     content: "Vragenlijst voor jongeren",
-    questionnaire: MPHQuestions_Adult, // should add the young adult questionnaire
+    questionnaire: MPHQuestions_Adult, // ! should add the young adult questionnaire
   },
 } as const;
 
