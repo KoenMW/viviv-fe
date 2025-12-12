@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
-  import type { Paths } from "../stores/router";
-  import type { MPHColours } from "../types";
+  import type { Paths } from "../../stores/router";
+  import type { MPHColours } from "../../types";
 
   type Props = {
     path: Paths;

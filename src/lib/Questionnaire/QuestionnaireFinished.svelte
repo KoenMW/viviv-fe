@@ -1,5 +1,5 @@
 <script>
-  import Link from "../Link.svelte";
+  import Link from "../common/Link.svelte";
 </script>
 
 <h2> De vragenlijst is klaar! </h2>

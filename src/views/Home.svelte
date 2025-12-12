@@ -1,9 +1,10 @@
 <script lang="ts">
   import { backupQuestionnaires } from "../consts";
-  import QuestionnaireButton from "../lib/QuestionnaireCard.svelte";
+  import QuestionnaireButton from "../lib/Questionnaire/QuestionnaireCard.svelte";
+  import { questionnaireFromApi } from "../stores/questionnaire";
 </script>
 
-<h1>vragenlijsten:</h1>
+<h1>{$questionnaireFromApi ? "vragenlijsten:" : "backup vragenlijsten:"}</h1>
 <section>
   {#each Object.entries(backupQuestionnaires) as [group, value]}
     <QuestionnaireButton

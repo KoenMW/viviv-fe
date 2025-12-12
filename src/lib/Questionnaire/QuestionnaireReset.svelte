@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Link from "../Link.svelte";
+  import Link from "../common/Link.svelte";
 
   type Props = {
     onclick: () => void;

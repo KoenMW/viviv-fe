@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { MPHColours } from "../types";
-  import Link from "./Link.svelte";
+  import type { MPHColours } from "../../types";
+  import Link from "../common/Link.svelte";
 
   type Props = {
     group: string;
