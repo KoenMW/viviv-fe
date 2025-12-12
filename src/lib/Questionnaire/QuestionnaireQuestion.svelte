@@ -1,73 +1,126 @@
 <script lang="ts">
-  import { MPHTopicColours } from "../../consts";
+  import { defaultQuestionnaireValue, MPHTopicColours } from "../../consts";
+  import { results, saveAnswere } from "../../stores/results";
   import {
     MPHTopics,
     type InputEventType,
+    type MPHColours,
+    type QuestionnaireState,
     type Questionnairetype,
   } from "../../types";
 
   type Props = {
     topics: MPHTopics[];
     currentTopic: MPHTopics;
-    nextQuestion: () => void;
-    oninput: (e: InputEventType) => void;
+    changeState: (state: QuestionnaireState) => void;
     questions: Questionnairetype;
     currentQuestion: number;
   };
 
-  let {
-    topics,
-    currentTopic,
-    nextQuestion,
-    oninput,
-    questions,
-    currentQuestion,
-  }: Props = $props();
+  let { topics, currentTopic, changeState, questions, currentQuestion }: Props =
+    $props();
 
-  let value: number = $state(5);
+  let colour: MPHColours = $derived(MPHTopicColours[currentTopic] ?? "blue");
+
+  let questionString: string = $derived(
+    questions[currentTopic][currentQuestion]
+  );
+
+  let value: number = $derived(
+    $results && $results[currentTopic][questionString]
+      ? $results[currentTopic][questionString]
+      : defaultQuestionnaireValue
+  );
 
   let percentageDone: number = $derived(
     (currentQuestion / questions[currentTopic].length) * 100
   );
+
+  const changeQuestion = (direction: 1 | -1) => {
+    if (!questions || currentQuestion + direction < 0) return;
+    saveAnswere(currentTopic, questionString, value);
+    currentQuestion += direction;
+    if (currentQuestion >= questions[currentTopic].length) {
+      const currentIndex = topics.findIndex((v) => v === currentTopic);
+      if (currentIndex >= topics.length - 1) {
+        changeState("finished");
+        return;
+      }
+      currentQuestion = 0;
+      currentTopic = topics[currentIndex + 1];
+      colour = MPHTopicColours[currentTopic];
+      console.log("Changing topic to ", currentTopic);
+    }
+  };
+
+  const oninput = (
+    e: Event & {
+      currentTarget: EventTarget & HTMLInputElement;
+    }
+  ) => {
+    value = Number(e.currentTarget.value);
+  };
 </script>
 
-<span class="highlight">{MPHTopics[currentTopic]}</span>
-<h2>{questions[currentTopic][currentQuestion]}</h2>
-<button
-  class="next"
-  onclick={() => {
-    nextQuestion();
-    value = 5;
-  }}>&gt;</button
->
-<div class="question-container">
-  <div class="question">Ik ben het met deze stelling eens:</div>
-  <input
-    class="slider"
-    type="range"
-    name="slider"
-    {oninput}
-    min="0"
-    max="10"
-    bind:value
-  />
-  <div class="bars">
-    {#each topics as topic}
-      <div
-        class="progress-bar"
-        style="--colour: var(--c-{MPHTopicColours[
-          topic
-        ]});--percentage: {topic === currentTopic
-          ? percentageDone
-          : topic > currentTopic
-            ? 0
-            : 100}%"
-      ></div>
-    {/each}
+<section style="--colour: var(--c-{colour})">
+  <span class="highlight">{MPHTopics[currentTopic]}</span>
+
+  <div class="question-navigation">
+    <button
+      class="next"
+      onclick={() => {
+        changeQuestion(-1);
+      }}>&lt;</button
+    >
+    <h2>{questions[currentTopic][currentQuestion]}</h2>
+    <button
+      class="next"
+      onclick={() => {
+        changeQuestion(1);
+      }}>&gt;</button
+    >
   </div>
-</div>
+  <div class="question-container">
+    <div class="question">Ik ben het met deze stelling eens:</div>
+    <input
+      class="slider"
+      type="range"
+      name="slider"
+      {oninput}
+      min="0"
+      max="10"
+      bind:value
+    />
+    <div class="bars">
+      {#each topics as topic}
+        <div
+          class="progress-bar"
+          style="--colour: var(--c-{MPHTopicColours[
+            topic
+          ]});--percentage: {topic === currentTopic
+            ? percentageDone
+            : topic > currentTopic
+              ? 0
+              : 100}%"
+        ></div>
+      {/each}
+    </div>
+  </div>
+</section>
 
 <style>
+  section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .question-navigation {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .question-container {
     width: 100%;
     text-align: center;

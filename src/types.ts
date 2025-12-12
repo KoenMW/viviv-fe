@@ -15,6 +15,8 @@ export type MPHColours =
   | "green"
   | "purple";
 
+export type QuestionnaireState = "questioning" | "finished" | "reset";
+
 export type MPHScores = Record<MPHTopics, Record<string, number>>;
 
 export type Questionnairetype = Record<MPHTopics, string[]>;

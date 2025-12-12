@@ -2,12 +2,12 @@
   import type { MPHColours } from "../types";
   import Link from "./Link.svelte";
 
-  type Porps = {
+  type Props = {
     group: string;
     content: string;
     colour: MPHColours;
   };
-  let { group, content, colour }: Porps = $props();
+  let { group, content, colour }: Props = $props();
 </script>
 
 <div class="container" style="--colour: var(--c-{colour})">

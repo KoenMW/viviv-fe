@@ -1,5 +1,5 @@
 import { get, writable } from "svelte/store";
-import type { MPHScores } from "../types";
+import type { MPHScores, MPHTopics } from "../types";
 import { localResultsKey } from "../consts";
 
 export const results = writable<MPHScores | null>(null);
@@ -39,4 +39,18 @@ export const saveLocal = () => {
 
 export const clearLocal = () => {
   localStorage.removeItem(localResultsKey);
+};
+
+export const saveAnswere = (
+  topic: MPHTopics,
+  question: string,
+  value: number
+) => {
+  results.update((v) => {
+    if (!v) {
+      throw new Error("no prior results to save too");
+    }
+    v[topic][question] = value;
+    return v;
+  });
 };

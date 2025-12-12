@@ -1,15 +1,25 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import type { MPHColours, MPHTopics, Questionnairetype } from "../types";
+  import {
+    MPHTopics,
+    type MPHColours,
+    type QuestionnaireState,
+    type Questionnairetype,
+  } from "../types";
   import {
     MPHTopicColours,
     questionnaireParam,
-    questionnaires,
+    backupQuestionnaires,
   } from "../consts";
   import QuestionnaireFinished from "../lib/Questionnaire/QuestionnaireFinished.svelte";
   import QuestionnaireQuestion from "../lib/Questionnaire/QuestionnaireQuestion.svelte";
   import QuestionnaireError from "../lib/Questionnaire/QuestionnaireError.svelte";
-  import { setEmptyResults, results, saveLocal } from "../stores/results";
+  import {
+    setEmptyResults,
+    results,
+    saveLocal,
+    saveAnswere,
+  } from "../stores/results";
   import QuestionnaireReset from "../lib/Questionnaire/QuestionnaireReset.svelte";
 
   let questions: null | Questionnairetype = $state(null);
@@ -18,26 +28,9 @@
   );
   let error: string = $state("");
   let currentTopic: MPHTopics = $state(0);
-  let colour: MPHColours = $derived(MPHTopicColours[currentTopic]);
+  let colour: MPHColours = $derived(MPHTopicColours[currentTopic] ?? "blue");
   let currentQuestion: number = $state(0);
-  let currentValue: number = $state(5);
-  let currentState: "questioning" | "finished" | "reset" =
-    $state("questioning");
-
-  const saveAnswere = () => {
-    results.update((v) => {
-      if (!v) {
-        error = `kan resultaten niet opslaan\nresults: ${!!v}`;
-        return null;
-      }
-      if (!questions) {
-        error = `vragen zijn niet beschikbaar\nquestions: ${!!questions}`;
-        return v;
-      }
-      v[currentTopic][questions[currentTopic][currentQuestion]] = currentValue;
-      return v;
-    });
-  };
+  let currentState: QuestionnaireState = $state("questioning");
 
   const warnMessageEvent = (e: BeforeUnloadEvent) => {
     if (currentState === "reset") return;
@@ -48,50 +41,40 @@
     return confirmationMessage;
   };
 
-  const setFinished = () => {
-    currentState = "finished";
-    window.removeEventListener("beforeunload", warnMessageEvent);
-    saveLocal();
-  };
-
-  const nextQuestion = () => {
-    if (!questions) return;
-    saveAnswere();
-    currentQuestion++;
-    if (currentQuestion >= questions[currentTopic].length) {
-      const currentIndex = topics.findIndex((v) => v === currentTopic);
-      if (currentIndex >= topics.length - 1) {
-        setFinished();
-        return;
-      }
-      currentQuestion = 0;
-      currentTopic = topics[currentIndex + 1];
-      colour = MPHTopicColours[currentTopic];
-    }
-  };
-
   const reset = () => {
     currentState = "questioning";
     setEmptyResults();
   };
 
-  const sliderChange = (
-    e: Event & {
-      currentTarget: EventTarget & HTMLInputElement;
-    }
-  ) => {
-    currentValue = Number(e.currentTarget.value);
+  const changeState = (state: QuestionnaireState) => {
+    currentState = state;
   };
+
+  $effect(() => {
+    switch (currentState) {
+      case "finished": {
+        window.removeEventListener("beforeunload", warnMessageEvent);
+        saveLocal();
+        break;
+      }
+      case "reset": {
+        reset();
+        break;
+      }
+      default:
+        break;
+    }
+  });
 
   onMount(() => {
     const searchParams = new URLSearchParams(location.search);
     const paramResult = searchParams.get(questionnaireParam) ?? "";
-    if (!Object.keys(questionnaires).includes(paramResult)) {
+    if (!Object.keys(backupQuestionnaires).includes(paramResult)) {
       error = `Onbekende vragenlijst: ${paramResult}`;
       return;
     }
-    questions = questionnaires[paramResult].questionnaire;
-    currentTopic = topics[0];
+    questions = backupQuestionnaires[paramResult].questionnaire;
+    currentTopic = 0;
 
     if ($results) currentState = "reset";
     else setEmptyResults();
@@ -111,10 +94,9 @@
     <QuestionnaireQuestion
       {topics}
       {currentTopic}
-      {nextQuestion}
       {questions}
       {currentQuestion}
-      oninput={sliderChange}
+      {changeState}
     />
   {/if}
 </section>
