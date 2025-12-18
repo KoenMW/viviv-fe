@@ -1,13 +1,4 @@
-export enum MPHTopics {
-  "lichaamsfuncties",
-  "mentaal welbevinden",
-  "zingeving",
-  "kwaliteit van leven",
-  "meeddoen",
-  "dagelijks functioneren",
-}
-
-export type MPHColours =
+export type MPHColors =
   | "red"
   | "blue"
   | "yellow"
@@ -17,16 +8,31 @@ export type MPHColours =
 
 export type QuestionnaireState = "questioning" | "finished" | "reset";
 
-export type MPHScores = Record<MPHTopics, Record<string, number>>;
+export type MPHScores = Record<string, Record<string, number>>;
 
-export type Questionnairetype = Record<MPHTopics, string[]>;
+export type Questionnairetype = Record<string, string[]>;
 
 export type InputEventType = Event & {
   currentTarget: EventTarget & HTMLInputElement;
 };
 
-export type getQuestionnairesResponse = {
+export type Question = {
   id: string;
-  title: string;
-  color: MPHColours;
-}[];
+  topic_id: string;
+  questionnaire_id: string;
+  content: string;
+};
+
+export type QuestionnairesCardType = {
+  id: string;
+  name: string;
+  color: MPHColors;
+};
+
+export type MPHTopic = {
+  id: string;
+  name: string;
+  color: MPHColors;
+};
+
+export type MPHTopics = Record<string, MPHTopic>;

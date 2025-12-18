@@ -10,7 +10,7 @@
 
 <h2>Je hebt de vragenlijst al ingevuld, wil je hem opnieuw invullen?</h2>
 <div class="container">
-  <button {onclick}>ja</button><Link path="" colour="green">Nee</Link>
+  <button {onclick}>ja</button><Link path="" color="green">Nee</Link>
 </div>
 
 <style>

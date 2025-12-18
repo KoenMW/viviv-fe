@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
   import type { Paths } from "../../stores/router";
-  import type { MPHColours } from "../../types";
+  import type { MPHColors } from "../../types";
 
   type Props = {
     path: Paths;
@@ -10,7 +10,7 @@
 
   type PartialProps = Partial<{
     params: Record<string, string>;
-    colour: MPHColours;
+    color: MPHColors;
     width: "auto" | "100%";
   }>;
 
@@ -18,7 +18,7 @@
     path,
     children,
     params,
-    colour,
+    color,
     width = "auto",
   }: Props & PartialProps = $props();
 
@@ -34,6 +34,6 @@
 
 <a
   href="?route={path}{paramsToString(params)}"
-  style="{colour && `--colour: var(--c-${colour})`}; width: {width}"
+  style="{color && `--color: var(--c-${color})`}; width: {width}"
   >{@render children()}</a
 >
