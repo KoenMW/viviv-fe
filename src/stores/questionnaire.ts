@@ -37,3 +37,7 @@ export const topics = writable<MPHTopics>({
     color: "green",
   },
 });
+
+topics.subscribe((value) => {
+  console.log("Topics store updated:", value);
+});

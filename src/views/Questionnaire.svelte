@@ -11,10 +11,8 @@
   import QuestionnaireError from "../lib/Questionnaire/QuestionnaireError.svelte";
   import { setEmptyResults, results, saveLocal } from "../stores/results";
   import QuestionnaireReset from "../lib/Questionnaire/QuestionnaireReset.svelte";
-  import {
-    getQuestionnaireById,
-    getTopicIdsFromQuestions,
-  } from "../util/questionnaire";
+  import { getQuestionnaireById } from "../util/questionnaire";
+  import { topics } from "../stores/questionnaire";
 
   let questionnaire: null | Questionnairetype = $state(null);
   let topicIds: string[] = $derived(
@@ -22,7 +20,6 @@
   );
   let error: string = $state("");
   let currentTopicId: string = $state("");
-  let color: MPHColors = $state("blue");
   let currentQuestion: number = $state(0);
   let currentState: QuestionnaireState = $state("questioning");
 
@@ -63,25 +60,39 @@
   onMount(async () => {
     const searchParams = new URLSearchParams(location.search);
     const paramResult = searchParams.get(questionnaireParam) ?? "";
-    if (!Object.keys(backupQuestionnaires).includes(paramResult)) {
-      try {
+    try {
+      if (!Object.keys(backupQuestionnaires).includes(paramResult)) {
         questionnaire = await getQuestionnaireById(paramResult);
-      } catch (_) {
-        error = `Onbekende vragenlijst: ${paramResult}`;
+      } else {
+        const backup = backupQuestionnaires.find((q) => q.id === paramResult);
+        questionnaire = backup ? backup.questionnaire : null;
+      }
+
+      if (!questionnaire) {
+        error = `Vragenlijst niet gevonden: ${paramResult}`;
         return;
       }
+
+      topicIds = Object.keys(questionnaire);
+      currentTopicId = topicIds[0];
+
+      console.log("idx topicIds", topicIds);
+
+      if ($results) currentState = "reset";
+      else setEmptyResults();
+
+      window.addEventListener("beforeunload", warnMessageEvent);
+    } catch (_) {
+      error = `Onbekende vragenlijst: ${paramResult}`;
     }
-    questionnaire = backupQuestionnaires[paramResult].questions;
-    currentTopicId = "0";
-
-    if ($results) currentState = "reset";
-    else setEmptyResults();
-
-    window.addEventListener("beforeunload", warnMessageEvent);
   });
 </script>
 
-<section style="--color: var(--c-{color})">
+<section
+  style="--color: var(--c-{$topics[currentTopicId]
+    ? $topics[currentTopicId].color
+    : 'blue'})"
+>
   {#if error}
     <QuestionnaireError {error} />
   {:else if currentState === "reset"}

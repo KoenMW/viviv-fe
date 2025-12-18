@@ -6,7 +6,7 @@
   import type { QuestionnairesCardType } from "../types";
   import { getQuestionnaires } from "../util/questionnaire";
 
-  let questionnaires = $state<QuestionnairesCardType | null>(null);
+  let questionnaires = $state<QuestionnairesCardType[]>(backupQuestionnaires);
 
   onMount(async () => {
     try {
@@ -20,8 +20,12 @@
 
 <h1>{$questionnaireFromApi ? "vragenlijsten:" : "backup vragenlijsten:"}</h1>
 <section>
-  {#each Object.entries(backupQuestionnaires) as [group, value]}
-    <QuestionnaireButton {group} color={value.color} />
+  {#each questionnaires as questionnaire}
+    <QuestionnaireButton
+      title={questionnaire.title}
+      id={questionnaire.id}
+      color={questionnaire.color}
+    />
   {/each}
 </section>
 

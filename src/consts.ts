@@ -64,25 +64,13 @@ const MPHQuestions_Adult: Questionnairetype = {
   ],
 } as const;
 
-export const backupQuestionnaires: Record<
-  string,
-  QuestionnairesCardType & {
-    questions: Questionnairetype;
-  }
-> = {
-  volwassenen: {
-    id: "",
+export const backupQuestionnaires: (QuestionnairesCardType & {
+  questionnaire: Questionnairetype;
+})[] = [
+  {
+    id: "volwassenen",
     color: "red",
-    name: "Volwassenen",
-    questions: MPHQuestions_Adult,
+    title: "Volwassenen",
+    questionnaire: MPHQuestions_Adult,
   },
-} as const;
-
-// export const MPHTopiccolors: Record<MPHTopics, MPHcolors> = {
-//   0: "red",
-//   1: "blue",
-//   2: "purple",
-//   3: "yellow",
-//   4: "orange",
-//   5: "green",
-// };
+] as const;

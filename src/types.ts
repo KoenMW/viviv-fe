@@ -25,7 +25,7 @@ export type Question = {
 
 export type QuestionnairesCardType = {
   id: string;
-  name: string;
+  title: string;
   color: MPHColors;
 };
 

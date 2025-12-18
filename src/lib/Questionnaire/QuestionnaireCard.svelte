@@ -3,18 +3,19 @@
   import Link from "../common/Link.svelte";
 
   type Props = {
-    group: string;
+    title: string;
+    id: string;
     color: MPHColors;
   };
-  let { group, color }: Props = $props();
+  let { title, id, color }: Props = $props();
 </script>
 
 <div class="container" style="--color: var(--c-{color})">
-  <h3>{group}</h3>
+  <h3>{title}</h3>
   <Link
     path="questionnaire"
     params={{
-      questionnaire: group,
+      questionnaire: id,
     }}
     width="100%">Kies</Link
   >
