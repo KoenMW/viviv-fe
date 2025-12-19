@@ -11,21 +11,19 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --c-red: #E4022E;
-  --c-blue: #00A3DF;
-  --c-purple: #832C87;
-  --c-yellow: #F59C00;
-  --c-orange: #EE7006;
-  --c-green: #95C21F;
+  --c-red: #e4022e;
+  --c-blue: #00a3df;
+  --c-purple: #832c87;
+  --c-yellow: #f59c00;
+  --c-orange: #ee7006;
+  --c-green: #95c21f;
   --c-white: #ffffff;
 
   --c-background: #242424;
   --c-foreground: var(--c-white);
 
-  
   background-color: var(--c-background);
   color: var(--c-foreground);
-
 }
 
 .light {
@@ -34,7 +32,7 @@
 }
 
 a {
-  background-color: var(--colour);
+  background-color: var(--color);
   color: var(--c-white);
   text-transform: uppercase;
   text-align: center;
@@ -67,7 +65,6 @@ h1 {
 .card {
   padding: 2em;
 }
-
 
 button {
   border-radius: 8px;
@@ -102,7 +99,7 @@ button:focus-visible {
 }
 
 .highlight {
-  color: var(--colour);
+  color: var(--color);
 }
 
 * {

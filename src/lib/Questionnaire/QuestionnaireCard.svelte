@@ -1,22 +1,21 @@
 <script lang="ts">
-  import type { MPHColours } from "../types";
-  import Link from "./Link.svelte";
+  import type { MPHColors } from "../../types";
+  import Link from "../common/Link.svelte";
 
   type Props = {
-    group: string;
-    content: string;
-    colour: MPHColours;
+    title: string;
+    id: string;
+    color: MPHColors;
   };
-  let { group, content, colour }: Props = $props();
+  let { title, id, color }: Props = $props();
 </script>
 
-<div class="container" style="--colour: var(--c-{colour})">
-  <h3>{group}</h3>
-  <div class="content">{content}</div>
+<div class="container" style="--color: var(--c-{color})">
+  <h3>{title}</h3>
   <Link
     path="questionnaire"
     params={{
-      questionnaire: group,
+      questionnaire: id,
     }}
     width="100%">Kies</Link
   >
@@ -29,14 +28,14 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    box-shadow: 0 0 0.5rem var(--colour);
+    box-shadow: 0 0 0.5rem var(--color);
     padding: 1rem;
     border-radius: 1rem;
     justify-content: space-between;
   }
 
   h3 {
-    background-color: var(--colour);
+    background-color: var(--color);
     text-align: center;
     border-radius: 0.5rem;
     width: 90%;
@@ -44,9 +43,5 @@
     padding: 0.5rem;
     text-transform: uppercase;
     color: var(--c-white);
-  }
-
-  .content {
-    text-align: center;
   }
 </style>

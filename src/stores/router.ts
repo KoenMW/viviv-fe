@@ -21,7 +21,7 @@ const setRouteAndParams = () => {
 };
 
 export const goTo = (route: string) => {
-  const url = new URL(window.location.href);
+  const url = new URL(globalThis.location.href);
   url.searchParams.set(routeParam, route);
 
   history.pushState({}, "", url);

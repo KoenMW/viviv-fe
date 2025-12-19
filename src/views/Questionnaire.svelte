@@ -1,34 +1,25 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import {
-    MPHTopics,
-    type MPHColours,
+    type MPHColors,
     type QuestionnaireState,
     type Questionnairetype,
   } from "../types";
-  import {
-    MPHTopicColours,
-    questionnaireParam,
-    backupQuestionnaires,
-  } from "../consts";
+  import { questionnaireParam, backupQuestionnaires } from "../consts";
   import QuestionnaireFinished from "../lib/Questionnaire/QuestionnaireFinished.svelte";
   import QuestionnaireQuestion from "../lib/Questionnaire/QuestionnaireQuestion.svelte";
   import QuestionnaireError from "../lib/Questionnaire/QuestionnaireError.svelte";
-  import {
-    setEmptyResults,
-    results,
-    saveLocal,
-    saveAnswere,
-  } from "../stores/results";
+  import { setEmptyResults, results, saveLocal } from "../stores/results";
   import QuestionnaireReset from "../lib/Questionnaire/QuestionnaireReset.svelte";
+  import { getQuestionnaireById } from "../util/questionnaire";
+  import { topics } from "../stores/questionnaire";
 
-  let questions: null | Questionnairetype = $state(null);
-  let topics: MPHTopics[] = $derived(
-    questions ? Object.keys(questions).map((v) => Number(v)) : []
+  let questionnaire: null | Questionnairetype = $state(null);
+  let topicIds: string[] = $derived(
+    questionnaire ? Object.keys(questionnaire) : []
   );
   let error: string = $state("");
-  let currentTopic: MPHTopics = $state(0);
-  let colour: MPHColours = $derived(MPHTopicColours[currentTopic] ?? "blue");
+  let currentTopicId: string = $state("");
   let currentQuestion: number = $state(0);
   let currentState: QuestionnaireState = $state("questioning");
 
@@ -66,35 +57,53 @@
     }
   });
 
-  onMount(() => {
+  onMount(async () => {
     const searchParams = new URLSearchParams(location.search);
     const paramResult = searchParams.get(questionnaireParam) ?? "";
-    if (!Object.keys(backupQuestionnaires).includes(paramResult)) {
+    try {
+      if (!Object.keys(backupQuestionnaires).includes(paramResult)) {
+        questionnaire = await getQuestionnaireById(paramResult);
+      } else {
+        const backup = backupQuestionnaires.find((q) => q.id === paramResult);
+        questionnaire = backup ? backup.questionnaire : null;
+      }
+
+      if (!questionnaire) {
+        error = `Vragenlijst niet gevonden: ${paramResult}`;
+        return;
+      }
+
+      topicIds = Object.keys(questionnaire);
+      currentTopicId = topicIds[0];
+
+      console.log("idx topicIds", topicIds);
+
+      if ($results) currentState = "reset";
+      else setEmptyResults();
+
+      window.addEventListener("beforeunload", warnMessageEvent);
+    } catch (_) {
       error = `Onbekende vragenlijst: ${paramResult}`;
-      return;
     }
-    questions = backupQuestionnaires[paramResult].questionnaire;
-    currentTopic = 0;
-
-    if ($results) currentState = "reset";
-    else setEmptyResults();
-
-    window.addEventListener("beforeunload", warnMessageEvent);
   });
 </script>
 
-<section style="--colour: var(--c-{colour})">
+<section
+  style="--color: var(--c-{$topics[currentTopicId]
+    ? $topics[currentTopicId].color
+    : 'blue'})"
+>
   {#if error}
     <QuestionnaireError {error} />
   {:else if currentState === "reset"}
     <QuestionnaireReset onclick={reset} />
   {:else if currentState === "finished"}
     <QuestionnaireFinished />
-  {:else if questions && currentState === "questioning"}
+  {:else if questionnaire && currentState === "questioning"}
     <QuestionnaireQuestion
-      {topics}
-      {currentTopic}
-      {questions}
+      {topicIds}
+      {currentTopicId}
+      questions={questionnaire}
       {currentQuestion}
       {changeState}
     />

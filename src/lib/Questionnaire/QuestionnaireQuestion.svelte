@@ -1,55 +1,57 @@
 <script lang="ts">
-  import { defaultQuestionnaireValue, MPHTopicColours } from "../../consts";
+  import { defaultQuestionnaireValue } from "../../consts";
+  import { topics } from "../../stores/questionnaire";
   import { results, saveAnswere } from "../../stores/results";
-  import {
-    MPHTopics,
-    type InputEventType,
-    type MPHColours,
-    type QuestionnaireState,
-    type Questionnairetype,
+  import type {
+    MPHColors,
+    QuestionnaireState,
+    Questionnairetype,
   } from "../../types";
 
   type Props = {
-    topics: MPHTopics[];
-    currentTopic: MPHTopics;
+    topicIds: string[];
+    currentTopicId: string;
     changeState: (state: QuestionnaireState) => void;
     questions: Questionnairetype;
     currentQuestion: number;
   };
 
-  let { topics, currentTopic, changeState, questions, currentQuestion }: Props =
-    $props();
-
-  let colour: MPHColours = $derived(MPHTopicColours[currentTopic] ?? "blue");
+  let {
+    topicIds,
+    currentTopicId,
+    changeState,
+    questions,
+    currentQuestion,
+  }: Props = $props();
 
   let questionString: string = $derived(
-    questions[currentTopic][currentQuestion]
+    questions[currentTopicId][currentQuestion]
   );
 
-  let value: number = $derived(
-    $results && $results[currentTopic][questionString]
-      ? $results[currentTopic][questionString]
+  let answerValue: number = $derived(
+    $results &&
+      $results[currentTopicId] &&
+      $results[currentTopicId][questionString]
+      ? $results[currentTopicId][questionString]
       : defaultQuestionnaireValue
   );
 
   let percentageDone: number = $derived(
-    (currentQuestion / questions[currentTopic].length) * 100
+    (currentQuestion / questions[currentTopicId].length) * 100
   );
 
   const changeQuestion = (direction: 1 | -1) => {
     if (!questions || currentQuestion + direction < 0) return;
-    saveAnswere(currentTopic, questionString, value);
+    saveAnswere(currentTopicId, questionString, answerValue);
     currentQuestion += direction;
-    if (currentQuestion >= questions[currentTopic].length) {
-      const currentIndex = topics.findIndex((v) => v === currentTopic);
-      if (currentIndex >= topics.length - 1) {
+    if (currentQuestion >= questions[currentTopicId].length) {
+      const currentIndex = topicIds.indexOf(currentTopicId);
+      if (currentIndex === topicIds.length - 1) {
         changeState("finished");
         return;
       }
       currentQuestion = 0;
-      currentTopic = topics[currentIndex + 1];
-      colour = MPHTopicColours[currentTopic];
-      console.log("Changing topic to ", currentTopic);
+      currentTopicId = topicIds[currentIndex + 1];
     }
   };
 
@@ -58,12 +60,12 @@
       currentTarget: EventTarget & HTMLInputElement;
     }
   ) => {
-    value = Number(e.currentTarget.value);
+    answerValue = Number(e.currentTarget.value);
   };
 </script>
 
-<section style="--colour: var(--c-{colour})">
-  <span class="highlight">{MPHTopics[currentTopic]}</span>
+<section style="--color: var(--c-{$topics[currentTopicId].color})">
+  <span class="highlight">{$topics[currentTopicId].name}</span>
 
   <div class="question-navigation">
     <button
@@ -72,7 +74,7 @@
         changeQuestion(-1);
       }}>&lt;</button
     >
-    <h2>{questions[currentTopic][currentQuestion]}</h2>
+    <h2>{questions[currentTopicId][currentQuestion]}</h2>
     <button
       class="next"
       onclick={() => {
@@ -89,17 +91,16 @@
       {oninput}
       min="0"
       max="10"
-      bind:value
+      bind:value={answerValue}
     />
     <div class="bars">
-      {#each topics as topic}
+      {#each Object.values($topics) as topic, index}
         <div
           class="progress-bar"
-          style="--colour: var(--c-{MPHTopicColours[
-            topic
-          ]});--percentage: {topic === currentTopic
+          style="--color: var(--c-{topic.color});--percentage: {topic ===
+          $topics[currentTopicId]
             ? percentageDone
-            : topic > currentTopic
+            : index > Object.keys($topics).indexOf(currentTopicId)
               ? 0
               : 100}%"
         ></div>
@@ -127,7 +128,7 @@
   }
 
   .next {
-    background-color: var(--colour);
+    background-color: var(--color);
     width: fit-content;
     align-self: flex-end;
   }
@@ -143,13 +144,13 @@
 
   .slider::-webkit-slider-runnable-track {
     height: 0.4rem;
-    background: var(--colour);
+    background: var(--color);
     border-radius: 0.2rem;
   }
 
   .slider::-moz-range-track {
     height: 0.4rem;
-    background: var(--colour);
+    background: var(--color);
     border-radius: 0.2rem;
   }
 
@@ -158,7 +159,7 @@
     appearance: none;
     width: 1.2rem;
     height: 1.2rem;
-    background: var(--colour);
+    background: var(--color);
     border-radius: 50%;
     cursor: pointer;
     margin-top: -0.4rem;
@@ -167,7 +168,7 @@
   .slider::-moz-range-thumb {
     width: 1.2rem;
     height: 1.2rem;
-    background: var(--colour);
+    background: var(--color);
     border-radius: 50%;
     cursor: pointer;
   }
@@ -194,7 +195,7 @@
     top: 0;
     position: absolute;
     height: 100%;
-    background-color: var(--colour);
+    background-color: var(--color);
     border-radius: inherit;
   }
 
