@@ -4,6 +4,7 @@ import { writable } from "svelte/store";
 import { routeParam } from "../consts";
 import Questionaire from "../views/Questionnaire.svelte";
 import Login from "../views/Login.svelte";
+import Register from "../views/register.svelte";
 
 export type Routes = Record<string, Component>;
 
@@ -13,7 +14,7 @@ export const routes: Routes = {
   "": Home,
   questionnaire: Questionaire,
   login: Login,
-  register: Login,
+  register: Register,
 };
 
 export const route = writable<string>("");

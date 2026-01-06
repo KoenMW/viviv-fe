@@ -6,6 +6,7 @@
 
   let email: string = $state("");
   let password: string = $state("");
+  let username: string = $state("");
   let errorMessage: string = $state("");
 
   $effect(() => {
@@ -21,20 +22,24 @@
   const handleSubmit = async (event: Event) => {
     event.preventDefault();
 
-    const response = await post(
-      `${import.meta.env.VITE_USER_API_URL}auth/login`,
-      {
-        email,
-        password,
-      }
-    );
+    const response = await post(`${import.meta.env.VITE_USER_API_URL}users`, {
+      email,
+      password,
+      name: username,
+    });
 
     if (response.ok) {
-      const data = await response.json();
+      const loginResponse = await post(
+        `${import.meta.env.VITE_USER_API_URL}auth/login`,
+        {
+          email,
+          password,
+        }
+      );
+      const data = await loginResponse.json();
       jwtStore.set(data.token);
-      errorMessage = "";
       goTo("");
-    } else if (response.status === 401) {
+    } else if (response.status === 400) {
       errorMessage = "Invalid email or password.";
     } else {
       errorMessage = "An error occurred. Please try again later.";
@@ -46,6 +51,15 @@
   {#if errorMessage}
     <p class="error">{errorMessage}</p>
   {/if}
+  <label for="username">Username:</label>
+  <input
+    type="text"
+    id="username"
+    name="username"
+    required
+    bind:value={username}
+  />
+
   <label for="email">Email:</label>
   <input type="email" id="email" name="email" required bind:value={email} />
 
@@ -58,8 +72,11 @@
     bind:value={password}
   />
 
-  <button type="submit" onclick={handleSubmit}>Login</button>
-  <Link path="register" color="blue">Register</Link>
+  <button type="submit" onclick={handleSubmit}>Register</button>
+  <p
+    >Already have an account? <Link path="login" color="blue">Login here</Link
+    >.</p
+  >
 </form>
 
 <style>
