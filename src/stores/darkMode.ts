@@ -1,10 +1,7 @@
 import { writable } from "svelte/store";
 
-const initialDarkMode = localStorage.getItem("darkMode") === "true";
-
-export const darkMode = writable<boolean>(initialDarkMode);
+export const darkMode = writable<boolean>(false);
 
 darkMode.subscribe((value) => {
   document.documentElement.classList.toggle("light", value);
-  localStorage.setItem("darkMode", value ? "true" : "false");
 });

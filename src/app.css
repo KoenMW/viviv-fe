@@ -75,16 +75,28 @@ button {
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s ease, scale 0.25s ease;
-  
+  transition: border-color 0.25s;
 }
 button:hover {
-  scale: 1.05;
+  border-color: #646cff;
 }
-button:active{
-  scale: 0.95;
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
 }
 
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
 
 .highlight {
   color: var(--color);
