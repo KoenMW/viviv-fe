@@ -60,7 +60,7 @@
     justify-content: flex-end;
     gap: 1rem;
 
-    backdrop-filter: blur(10px);
+    background-color: var(--c-background);
   }
 
   .banner {
