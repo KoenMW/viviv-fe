@@ -37,18 +37,21 @@
     display: flex;
     flex-direction: column;
     width: calc(100dvw - var(--margin) * 2);
+    height: calc(100dvh - var(--margin) * 2);
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     margin: var(--margin);
   }
 
   header {
     width: 100dvw;
-    position: fixed;
+    position: sticky;
 
     top: 0;
-    left: 0;
+
     padding: 1rem var(--margin);
+
+    margin-bottom: var(--margin);
 
     display: flex;
     flex-direction: row;
@@ -56,6 +59,8 @@
     align-items: center;
     justify-content: flex-end;
     gap: 1rem;
+
+    backdrop-filter: blur(10px);
   }
 
   .banner {
