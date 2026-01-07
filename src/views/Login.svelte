@@ -7,6 +7,7 @@
   let email: string = $state("");
   let password: string = $state("");
   let errorMessage: string = $state("");
+  let loading: boolean = $state(false);
 
   $effect(() => {
     if (email || password) {
@@ -19,25 +20,34 @@
   };
 
   const handleSubmit = async (event: Event) => {
-    event.preventDefault();
+    try {
+      event.preventDefault();
 
-    const response = await post(
-      `${import.meta.env.VITE_USER_API_URL}auth/login`,
-      {
-        email,
-        password,
-      }
-    );
-
-    if (response.ok) {
-      const data = await response.json();
-      jwtStore.set(data.token);
+      loading = true;
       errorMessage = "";
-      goTo("");
-    } else if (response.status === 401) {
-      errorMessage = "Invalid email or password.";
-    } else {
+
+      const response = await post(
+        `${import.meta.env.VITE_USER_API_URL}auth/login`,
+        {
+          email,
+          password,
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        jwtStore.set(data.token);
+        errorMessage = "";
+        goTo("");
+      } else if (response.status === 401) {
+        errorMessage = "Invalid email or password.";
+      } else {
+        errorMessage = "An error occurred. Please try again later.";
+      }
+    } catch (error) {
       errorMessage = "An error occurred. Please try again later.";
+    } finally {
+      loading = false;
     }
   };
 </script>
@@ -58,7 +68,13 @@
     bind:value={password}
   />
 
-  <button type="submit" onclick={handleSubmit}>Login</button>
+  <button type="submit" onclick={handleSubmit} disabled={loading}>
+    {#if loading}
+      <div class="spinner"></div>
+    {:else}
+      Login
+    {/if}
+  </button>
   <Link path="register" color="blue">Register</Link>
 </form>
 

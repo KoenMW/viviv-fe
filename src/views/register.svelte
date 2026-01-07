@@ -8,6 +8,7 @@
   let password: string = $state("");
   let username: string = $state("");
   let errorMessage: string = $state("");
+  let loading: boolean = $state(false);
 
   $effect(() => {
     if (email || password) {
@@ -20,29 +21,38 @@
   };
 
   const handleSubmit = async (event: Event) => {
-    event.preventDefault();
+    try {
+      event.preventDefault();
 
-    const response = await post(`${import.meta.env.VITE_USER_API_URL}users`, {
-      email,
-      password,
-      name: username,
-    });
+      loading = true;
+      errorMessage = "";
 
-    if (response.ok) {
-      const loginResponse = await post(
-        `${import.meta.env.VITE_USER_API_URL}auth/login`,
-        {
-          email,
-          password,
-        }
-      );
-      const data = await loginResponse.json();
-      jwtStore.set(data.token);
-      goTo("");
-    } else if (response.status === 400) {
-      errorMessage = "Invalid email or password.";
-    } else {
+      const response = await post(`${import.meta.env.VITE_USER_API_URL}users`, {
+        email,
+        password,
+        name: username,
+      });
+
+      if (response.ok) {
+        const loginResponse = await post(
+          `${import.meta.env.VITE_USER_API_URL}auth/login`,
+          {
+            email,
+            password,
+          }
+        );
+        const data = await loginResponse.json();
+        jwtStore.set(data.token);
+        goTo("");
+      } else if (response.status === 400) {
+        errorMessage = "Invalid email or password.";
+      } else {
+        errorMessage = "An error occurred. Please try again later.";
+      }
+    } catch (error) {
       errorMessage = "An error occurred. Please try again later.";
+    } finally {
+      loading = false;
     }
   };
 </script>
@@ -72,7 +82,13 @@
     bind:value={password}
   />
 
-  <button type="submit" onclick={handleSubmit}>Register</button>
+  <button type="submit" onclick={handleSubmit} disabled={loading}>
+    {#if loading}
+      <div class="spinner"></div>
+    {:else}
+      Register
+    {/if}
+  </button>
   <p
     >Already have an account? <Link path="login" color="blue">Login here</Link
     >.</p
