@@ -32,6 +32,7 @@
 }
 
 a {
+  display: inline-block;
   background-color: var(--color);
   color: var(--c-white);
   text-transform: uppercase;
