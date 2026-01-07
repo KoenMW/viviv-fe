@@ -9,6 +9,8 @@
   let errorMessage: string = $state("");
   let loading: boolean = $state(false);
 
+  let form: HTMLFormElement | null = $state(null);
+
   $effect(() => {
     if (email || password) {
       clearError();
@@ -21,6 +23,15 @@
 
   const handleSubmit = async (event: Event) => {
     try {
+      if (!form) {
+        throw new Error("Form element not found");
+      }
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
       event.preventDefault();
 
       loading = true;
@@ -52,7 +63,7 @@
   };
 </script>
 
-<form>
+<form bind:this={form}>
   {#if errorMessage}
     <p class="error">{errorMessage}</p>
   {/if}
