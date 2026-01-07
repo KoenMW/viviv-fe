@@ -4,7 +4,7 @@ import { writable } from "svelte/store";
 import { routeParam } from "../consts";
 import Questionaire from "../views/Questionnaire.svelte";
 import Login from "../views/Login.svelte";
-import Register from "../views/register.svelte";
+import Register from "../views/Register.svelte";
 
 export type Routes = Record<string, Component>;
 
