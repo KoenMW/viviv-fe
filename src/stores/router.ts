@@ -17,19 +17,19 @@ export const routes: Routes = {
   register: Register,
 };
 
-export const route = writable<string>("");
+export const route = writable<Paths>("");
 
 const setRouteAndParams = () => {
   const searchParams = new URLSearchParams(location.search);
-  route.set(searchParams.get(routeParam) ?? "");
+  route.set((searchParams.get(routeParam) as Paths) ?? "");
 };
 
-export const goTo = (route: string) => {
+export const goTo = (destination: Paths) => {
   const url = new URL(globalThis.location.href);
-  url.searchParams.set(routeParam, route);
+  url.searchParams.set(routeParam, destination);
 
   history.pushState({}, "", url);
-  window.location.reload();
+  setRouteAndParams();
 };
 
 setRouteAndParams();

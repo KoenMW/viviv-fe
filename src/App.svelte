@@ -1,12 +1,33 @@
 <script lang="ts">
-  import { goTo, route, routes } from "./stores/router";
+  import { goTo, route, routes, type Paths } from "./stores/router";
   import notFound from "./views/404.svelte";
   import DarkMode from "./lib/common/DarkMode.svelte";
   import { jwtStore } from "./stores/jwt";
   import Link from "./lib/common/Link.svelte";
+  import type { Component } from "svelte";
+  import { logout, refreshToken } from "./util/api";
 
-  const page = $derived({
-    component: routes[$route] ?? notFound,
+  type pageType = {
+    component: Component;
+  };
+
+  let page: pageType | null = $state(null);
+
+  const getPage = async (route: Paths): Promise<pageType> => {
+    if (!$jwtStore) {
+      await refreshToken();
+    }
+    return {
+      component: routes[route] ?? notFound,
+    };
+  };
+
+  const updatePage = async (route: Paths) => {
+    page = await getPage(route);
+  };
+
+  $effect(() => {
+    updatePage($route);
   });
 </script>
 
@@ -20,15 +41,24 @@
       <Link path="login" color="green">Login</Link>
     {:else if !!$jwtStore}
       <button
-        onclick={() => {
-          jwtStore.set(null);
+        onclick={async () => {
+          await logout();
           goTo("");
         }}>Logout</button
       >
     {/if}
     <DarkMode />
   </header>
-  <page.component />
+  {#if !$jwtStore}
+    <p class="highlight"
+      >Je bent niet ingelogd, je kan nogsteeds de vragenlijsten invullen en
+      resultaten bekijken. maar jouw resultaten worden niet opgeslagen, je kan
+      dus geen persoonlijke voortgang bijhouden.</p
+    >
+  {/if}
+  {#if page}
+    <page.component />
+  {/if}
 </main>
 
 <style>
@@ -72,5 +102,13 @@
     background-repeat: no-repeat;
     background-position: center;
     box-shadow: 0 0 1rem var(--c-foreground);
+  }
+
+  .highlight {
+    background-color: var(--c-blue);
+    color: var(--c-background);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
   }
 </style>
