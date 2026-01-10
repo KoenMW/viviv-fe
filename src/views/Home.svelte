@@ -36,4 +36,8 @@
     flex-wrap: wrap;
     justify-content: center;
   }
+
+  h1 {
+    font-size: clamp(1.5rem, 4vw + 1rem, 2.5rem);
+  }
 </style>
