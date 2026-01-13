@@ -51,8 +51,8 @@
   </header>
   {#if !$jwtStore}
     <p class="highlight"
-      >Je bent niet ingelogd, je kan nogsteeds de vragenlijsten invullen en
-      resultaten bekijken. maar jouw resultaten worden niet opgeslagen, je kan
+      >Je bent niet ingelogd, je kan nog steeds de vragenlijsten invullen en
+      resultaten bekijken. Maar jouw resultaten worden niet opgeslagen, je kan
       dus geen persoonlijke voortgang bijhouden.</p
     >
   {/if}
